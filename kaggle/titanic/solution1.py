@@ -331,6 +331,7 @@ decision_tree.fit(X_train,Y_train)
 Y_pred=decision_tree.predict(X_test)
 acc_decision_tree=round(decision_tree.score(X_train,Y_train)*100,2)
 print(acc_decision_tree)
+print("tree importance",decision_tree.feature_importances_)
 
 
     #random forest
