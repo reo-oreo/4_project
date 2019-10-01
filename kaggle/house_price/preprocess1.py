@@ -12,7 +12,6 @@ from scipy import stats
 import warnings
 warnings.filterwarnings('ignore')
 
-
 #ファイルの読み込み
 
 df_train=pd.read_csv('./train.csv')
@@ -159,3 +158,18 @@ plt.show()
 df_train['HasBsmt'] = pd.Series(len(df_train['TotalBsmtSF']), index=df_train.index)
 df_train['HasBsmt'] = 0
 df_train.loc[df_train['TotalBsmtSF']>0,'HasBsmt'] = 1
+
+#transform data
+df_train.loc[df_train['HasBsmt']==1,'TotalBsmtSF']=np.log(df_train['TotalBsmtSF'])
+
+#ヒストグラムと正規確率分布
+sns.distplot(df_train[df_train['TotalBsmtSF']>0]['TotalBsmtSF'],fit=norm)
+fig=plt.figure()
+res=stats.probplot(df_train[df_train['TotalBsmtSF']>0]['TotalBsmtSF'],plot=plt)
+
+#散布図
+plt.scatter(df_train['GrLivArea'],df_train['SalePrice'])
+
+plt.scatter(df_train[df_train['TotalBsmtSF']>0]['TotalBsmtSF'],df_train[df_train['TotalBsmtSF']>0]['SalePrice'])
+
+df_train=pd.get_dummies(df_train)
